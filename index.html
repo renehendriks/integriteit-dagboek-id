@@ -1,0 +1,110 @@
+
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Integriteit Dagboek Dashboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 2rem;
+      background-color: #f9fafb;
+    }
+    h1 {
+      text-align: center;
+      color: #1e3a8a;
+    }
+    .date-picker {
+      margin: 1rem auto;
+      text-align: center;
+    }
+    table {
+      width: 100%;
+      margin-top: 1rem;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 10px;
+      border: 1px solid #ccc;
+      text-align: center;
+    }
+    th {
+      background-color: #e2e8f0;
+    }
+    button {
+      margin-top: 1rem;
+      padding: 0.5rem 1rem;
+      background-color: #1e3a8a;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #3749a3;
+    }
+  </style>
+</head>
+<body>
+  <h1>📘 Dagboek: Integriteit Dashboard</h1>
+
+  <div class="date-picker">
+    📅 Selecteer datum:
+    <input type="date" id="entryDate" />
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Tracking-item</th>
+        <th>✅</th>
+      </tr>
+    </thead>
+    <tbody id="trackingTable">
+      <tr><td>😌 Mood</td><td><input type="checkbox" data-key="mood" /></td></tr>
+      <tr><td>🛠 Activiteiten</td><td><input type="checkbox" data-key="activiteiten" /></td></tr>
+      <tr><td>⚙️ Productief</td><td><input type="checkbox" data-key="productief" /></td></tr>
+      <tr><td>🍽 Eten</td><td><input type="checkbox" data-key="eten" /></td></tr>
+      <tr><td>💪 Gezondheid</td><td><input type="checkbox" data-key="gezondheid" /></td></tr>
+      <tr><td>🧼 Huishouden</td><td><input type="checkbox" data-key="huishouden" /></td></tr>
+      <tr><td>🎨 Hobby's</td><td><input type="checkbox" data-key="hobbys" /></td></tr>
+      <tr><td>🤝 Sociaal</td><td><input type="checkbox" data-key="sociaal" /></td></tr>
+      <tr><td>💤 Slaap</td><td><input type="checkbox" data-key="slaap" /></td></tr>
+      <tr><td>📵 Afleiding</td><td><input type="checkbox" data-key="afleiding" /></td></tr>
+    </tbody>
+  </table>
+
+  <div style="text-align:center;">
+    <button onclick="saveEntry()">💾 Opslaan</button>
+  </div>
+
+  <script>
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    const entryDate = document.getElementById('entryDate');
+
+    function loadEntry() {
+      if (!entryDate.value) return;
+      const saved = JSON.parse(localStorage.getItem(entryDate.value) || '{}');
+      checkboxes.forEach(box => {
+        box.checked = !!saved[box.dataset.key];
+      });
+    }
+
+    function saveEntry() {
+      if (!entryDate.value) {
+        alert("Selecteer een datum!");
+        return;
+      }
+      const data = {};
+      checkboxes.forEach(box => {
+        data[box.dataset.key] = box.checked;
+      });
+      localStorage.setItem(entryDate.value, JSON.stringify(data));
+      alert("Opgeslagen voor " + entryDate.value);
+    }
+
+    entryDate.addEventListener('change', loadEntry);
+  </script>
+</body>
+</html>
